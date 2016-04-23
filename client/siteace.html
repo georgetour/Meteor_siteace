@@ -1,0 +1,119 @@
+<head>
+  <title>Course 3 Week 4 Final Assignment</title>
+</head>
+
+<body>
+
+</body>
+
+<template name="ApplicationLayout">
+  <nav class="navbar navbar-default">
+	<div class="container-fluid">
+	  <div class="navbar-header">
+
+	  </div>
+	  <div class="navbar-text">
+		{{> loginButtons}}
+	  </div>
+	  <div class="navbar-text">
+		{{> EasySearch.Input index=websitesIndex}}
+
+      </div>
+	</div>
+  </nav>
+  <div class="container">
+    {{> yield "main"}}
+  </div>
+</template>
+
+<template name="home">
+  {{#if currentUser}}
+	{{> website_form}}
+  {{/if}}
+  {{> website_list}}
+</template>
+
+<template name="website_form">
+    {{#if currentUser}}
+        <a class="btn btn-default js-toggle-website-form" href="#">
+            <span class=" glyphicon-plus" aria-hidden="true">Add new site</span>
+        </a>
+    {{/if}}
+
+    <!--Website form-->
+    <div id="website_form" class="hidden_div">
+        <form class="js-save-website-form">
+            <div class="form-group">
+                <label for="url">Site address</label>
+                <input required type="text" class="form-control" id="url" placeholder="http://www.mysite.com">
+            </div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input required type="text" class="form-control" id="title" placeholder="Mysite">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ...">
+            </div>
+
+            <button type="submit" class="btn btn-default ">Submit</button>
+        </form>
+    </div>
+    <!--End for Website form-->
+</template>
+
+<template name="website_list">
+  <ol id="website_list">
+	{{#EasySearch.Each index=websitesIndex}}
+	  {{>website_item}}
+	{{/EasySearch.Each}}
+  </ol>
+</template>
+
+<template name="website_item">
+  <li>
+	<a href="{{url}}">{{title}}</a>
+	<p>
+	  {{description}}
+	</p>
+	<a href="#" class="btn btn-default js-upvote">
+	  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+	</a>
+	<span class="votes">{{upVotes}}</span>
+	<a href="#" class="btn btn-default js-downvote">
+	  <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+	</a>
+	<span class="votes">{{downVotes}}</span>
+	<div class="timeago">Created: {{ createdOn}}</div>
+	<div class="more">
+	  <a href="/site/{{_id}}">Details</a>
+	</div>
+  </li>
+</template>
+
+<template name="site_detail">
+    <div class="container">
+  <a href="/">Go to main</a>
+  <h1><a href="{{url}}">{{title}}</a></h1>
+  <a href="{{url}}">{{url}}</a>
+  <div >Created : {{ createdOn}}</div>
+  <a href="#" class="btn btn-default js-upvote">
+	<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+  </a>
+  <span class="votes">{{upVotes}}</span>
+  <a href="#" class="btn btn-default js-downvote">
+	<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+  </a>
+  <span class="votes">{{downVotes}}</span>
+  <p>{{description}}</p>
+    <div class="row"> <!-- Comments -->
+        <div class="comment-section">
+            {{> commentsBox id=_id}}
+        </div>
+    </div>
+    </div>
+</template>
+
+
+
+
